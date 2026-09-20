@@ -1,0 +1,5 @@
+export interface TaskTypes {
+    title: string,
+    description: string,
+    dueDate: string
+}
