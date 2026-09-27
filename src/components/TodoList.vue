@@ -5,41 +5,86 @@
     <input v-model="title" type="text" placeholder="Unesite naslov zadatka" />
     <input v-model="description" type="text" placeholder="Unesite text zadatka" />
     <input v-model="dueDate" type="date" placeholder="Unesite datum zadatka" />
+    <select v-model="priority">
+        <option>Hitan </option>
+        <option>Vazan</option>
+        <option>Nije  toliko vazan </option>
+        <option>Nebitan</option>
+    </select>
     <button >Snimi zadatak</button>
   </form>
+
+  <div>
+    <div v-for="(task,index) in tasks"  :key="index">
+      <p>{{task.title}}</p>
+      <p>{{task.description}}</p>
+      <p>{{task.dueDate}}</p>
+      <p>{{task.priority}}</p>
+      <button @click="deleteTask(index)">Delete task </button>
+    </div>
+  </div>
+
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { TaskTypes } from '@/Types/TaskTypes'
+import FormTaskType from "@/Types/FormTaskType";
 
 export default defineComponent({
   name: "TodoList",
-  data(): {
-    title: string,
-    description:string,
-    dueDate:string
-    tasks:TaskTypes []
-
-  } {
+  data(): FormTaskType {
     return {
       title: '',
       description:'',
       dueDate:'',
+      priority: null,
       tasks:[],
 
     };
   },
   methods: {
     addTask () {
-       const tempTask={
-         title:this.title,
-         description:this.description,
-         dueDate:this.dueDate
-       }
-      this.tasks.push(tempTask)
 
+      const taskExists =this.tasks.some (task => task.title === this.title.trim())
+
+      if(taskExists){
+        alert("Mislim da ovaj zadatak postoji ")
+        return;
+      }
+
+      this.tasks.push({
+          title:this.title,
+          description:this.description,
+          dueDate:this.dueDate,
+          priority:this.priority!
+      });
+
+     this.resetFields();
+
+
+
+
+
+
+
+    },
+    resetFields () {
+      this.title= '';
+      this.description='';
+      this.dueDate='';
+      this.priority=null;
+    },
+
+    deleteTask(index:number,){
+       this.tasks.splice(index,1);
     }
-  },
+
+
+
+
+  }
+
+
 });
 </script>

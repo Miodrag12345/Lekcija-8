@@ -1,5 +1,8 @@
+import FormTaskType from "@/Types/FormTaskType";
+
 export interface TaskTypes {
     title: string,
     description: string,
-    dueDate: string
+    dueDate: string,
+    priority:"hitan" | "vazan" | "bitan" | "nebitan",
 }
